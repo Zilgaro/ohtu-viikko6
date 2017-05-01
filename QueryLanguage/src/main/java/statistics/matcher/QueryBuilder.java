@@ -4,30 +4,32 @@ public class QueryBuilder {
     private Matcher matcher;
     
     public QueryBuilder() {
-        this.matcher = new And();
+        this.matcher = new Base();
     }
     
     public Matcher build() {
-        return matcher;
+        Matcher newMatcher = matcher;
+        matcher = new Base();
+        return newMatcher;
     }
     
-    QueryBuilder oneOf(Matcher m1, Matcher m2) {
-        this.matcher = new Or(m1,m2);
+    public QueryBuilder oneOf(Matcher... matchers) {
+        this.matcher = new Or(matchers);
         return this;
     }
     
-    QueryBuilder hasAtLeast(int value, String category) {
-        this.matcher = new HasAtLeast(value, category);
+    public QueryBuilder hasAtLeast(int value, String category) {
+        this.matcher = new And(matcher, new HasAtLeast(value, category));
         return this;
     }
     
-    QueryBuilder hasFewerThan(int value, String category) {
-        this.matcher = new HasFewerThan(value, category);
+    public QueryBuilder hasFewerThan(int value, String category) {
+        this.matcher = new And(matcher, new HasFewerThan(value, category));
         return this;
     }
     
-    QueryBuilder playsInt(String team) {
-        this.matcher = new PlaysIn(team);
+    public QueryBuilder playsIn(String team) {
+        this.matcher = new And(matcher, new PlaysIn(team));
         return this;
     }
 }
