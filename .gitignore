@@ -2,3 +2,4 @@
 /Laskin/build/
 /QueryLanguage/.nb-gradle/
 /QueryLanguage/build/
+*.stackdump
